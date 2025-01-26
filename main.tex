@@ -98,7 +98,7 @@ Kauffman’s Theory of Adjacent Possible (TAP) emphasizes the combinatorial grow
 
 More elaborate chemical modeling systems, such as Mass Action Kinetics (MAK) \cite{TuranyiTomlin2014}, Chemical Reaction Network Theory (CRNT) \cite{feinberg1987chemical}, and the stochastic framework introduced by \cite{arxiv:q-bio0501016}, provide detailed, quantitative descriptions of reaction dynamics, often incorporating conservation laws and equilibrium states. These systems excel at modeling well-defined reaction pathways, particularly in chemical and biochemical systems, but they typically require predefined reaction sets and fail to explore open-ended generativity. Tononi's integrated information theory (IIT) \cite{tononi2008phi} offers a different perspective by quantifying the complexity of neural and information systems through measures like $\Phi$, focusing on the integration and differentiation of information. Despite their strengths, these frameworks do not explicitly isolate selection as an emergent mechanism in the evolution of information.
 
-Bayesian Assembly (BA) systems distinguish themselves by their narrow focus on stability as the central determinant of pattern persistence. Stability is simulated by associating different lifetimes with concatenated patterns, capturing the essential dynamics of selection without invoking detailed physical or chemical laws. This approach allows BA systems to isolate and model selection as the driving mechanism of information evolution. The term "Bayesian" reflects the iterative updating of probabilities for each pattern based on prior abundances and interactions. By emphasizing stability-driven selection in evolving state spaces, BA systems provide a dynamic and generative framework for studying how patterns are created, maintained, and ultimately evolve into complex configurations, complementing existing approaches while filling a crucial gap in our understanding of information evolution.
+Bayesian Assembly (BA) systems distinguish themselves by their narrow focus on stability as the central determinant of pattern persistence. Stability is simulated by associating different lifetimes with concatenated patterns, capturing the essential dynamics of selection without invoking detailed physical or chemical laws. This approach allows BA systems to isolate and model selection as the driving mechanism of information evolution. The term "Bayesian" \cite{mcgrayne2011theory} reflects the iterative updating of probabilities for each pattern based on prior abundances and observed interactions. By emphasizing stability-driven selection in evolving state spaces, BA systems provide a dynamic and generative framework for studying how patterns are created, maintained, and ultimately evolve into complex configurations, complementing existing approaches while filling a crucial gap in our understanding of information evolution.
 
 \section{BA System Fundamentals}
 
@@ -113,7 +113,7 @@ We define Bayesian Assembly (BA) Systems as follows: a population of base elemen
 
 Selection emerges naturally through the interplay of stability and probabilistic interactions. Consider a simple BA system starting with a few instances of base elements \( A \) and \( B \). The pattern \( AB \) has a lifetime of 10 generations, while \( ABAB \) has a lifetime of 50 generations, and all other compounds degrade instantly with a lifetime of 0. After the first generation, the system produces combinations such as \( AA \), \( BB \), and \( AB \). Since \( AA \) and \( BB \) are unstable, they are eliminated, leaving \( A \), \( B \), and \( AB \). In subsequent generations, new unstable patterns may appear transiently, but \( AB \) persists due to its longer lifetime. Over time, the population of \( AB \) increases probabilistically, as multiple instances of \( AB \) are likely to form, increasing the likelihood of forming \( ABAB \). This dynamic reflects a form of roulette wheel selection \cite{goldberg1989genetic} \cite{holland1975adaptation}, where the stability-driven persistence of \( AB \) amplifies its probability of interaction. The emergent pattern \( ABAB \) represents a higher-order configuration, demonstrating how selection, grounded in differential stability, shapes the system's evolutionary pathways. The mechanism relies on the stability-induced bias in interaction probabilities, ensuring that patterns with greater persistence are favored, enabling the accumulation of complexity over successive generations.
 
-The following simulation shows a different BA system with a population of 3 elements: {A, B, C}. Assume B-compounds are more stable than those without B. Thus patterns like BB, AB, BC, ABC, have a higher stability than AC or A or C. Therefore, B compounds will persist for multiple generations, while the others will quickly dissipate. The more stable B-compounds will interact more frequently due to their relative frequency, even without replication or inheritance. A snapshot of the simulation is shown in Figure \ref{fig:pat_1}.
+The following simulation shows a different BA system with a population of 3 elements: {A, B, C}. Assume B-compounds are more stable than those without B. Thus patterns like BB, AB, BC, ABC, have a higher stability than AC or A or C. Therefore, B compounds will persist for multiple generations, while the others will quickly dissipate. The more stable B-compounds will interact more frequently due to their relative frequency, even though there is no replication or inheritance at the individual compound level. A snapshot of the simulation is shown in Figure \ref{fig:pat_1}.
 
 \begin{figure}[htp]
     \centering
@@ -153,27 +153,36 @@ Intuitively, multiplying $P(p)$ by $S(p)$ reflects two factors: the initial abun
 \begin{equation}
 P_{t+1}(p) \;\propto\; P_t(p)\,\cdot\,S(p)
 \end{equation}
-Here, $S(p)$ represents the stable lifetime of pattern $p$. Multiplying $P_t(p)$ by $S(p)$ ensures that patterns with higher stability gain an advantage in subsequent generations, as they remain available for more interactions or persist longer. This update rule encapsulates the idea that a stable pattern is more likely to be ``selected'' over time. To quantify the system-wide impact of stability, we define an \emph{effective stability}:
+Here, $S(p)$ represents the stable lifetime of pattern $p$. Multiplying $P_t(p)$ by $S(p)$ ensures that patterns with higher stability gain an advantage in subsequent generations, as they remain available for more interactions or persist longer. This update rule encapsulates the idea that a stable pattern is more likely to be ``selected'' over time. 
+
+\subsection{Entropy Dynamics in BA Systems}
+
+The entropy dynamics in BA systems arise from the interplay between stabilizing feedback that reinforces stable patterns and stochastic fluctuations that increase randomness. To capture the system-wide effect of stability, we define an \emph{effective stability}:
 \begin{equation}
-S_{\mathrm{eff}} \;=\; \sum_{p \in P}\; P_t(p)\,\cdot\,S(p)
+S_{\mathrm{eff}} = \sum_{p \in P} P_t(p) \cdot S(p)
 \end{equation}
-which measures the average or global level of stability in the population. If the system becomes dominated by highly stable patterns, $S_{\mathrm{eff}}$ grows, increasing the overall rate at which such patterns are reinforced. Conversely, if less stable patterns predominate, $S_{\mathrm{eff}}$ is smaller, slowing the formation of ordered structures. In a continuous-time limit approximation, we can write
+where \( S(p) \) is the stability of pattern \( p \), and \( P_t(p) \) is its probability at time \( t \). Effective stability measures the weighted average stability of the population, reflecting how strongly stability drives the system dynamics. As stable patterns dominate, \( S_{\mathrm{eff}} \) increases, accelerating reinforcement. Conversely, a prevalence of less stable patterns reduces \( S_{\mathrm{eff}} \), slowing the ordering process. As we reduce $\Delta t$ in generational simulation the continuous-time approximation of the probability evolution in BA systems tends to:
 \begin{equation}
-\frac{dP(p,t)}{dt} \;\propto\; P(p,t)\,\cdot\,S_{\mathrm{eff}}
+\frac{dP(p,t)}{dt} \propto P(p,t) \cdot S_{\mathrm{eff}}
 \end{equation}
-leading to an exponential solution of the form
+which implies an exponential solution:
 \begin{equation}
-P_t(p) \;\propto\; e^{S_{\mathrm{eff}}\,t}
+P_t(p) = \frac{e^{S_{\mathrm{eff}} t}}{Z(t)}
 \end{equation}
-This exponential growth demonstrates how feedback from stable patterns accelerates the ordering process, continually reinforcing those patterns that remain viable. Entropy changes arise from two competing processes. On the one hand, random fluctuations broaden the distribution (increasing entropy) at a logarithmic rate. As in other diffusive or random-walk scenarios, the accessible state space grows sub-exponentially (e.g., proportional to $\sqrt{t}$), causing the associated entropy to accumulate at a rate proportional to $\ln(t)$:
+Here, \( Z(t) = \sum_{p} e^{S_{\mathrm{eff}} t} \) is the normalization factor ensuring that probabilities sum to 1. The entropy of the system is defined as:
 \begin{equation}
-\Delta H_{\text{random}} \;\propto\; \ln(t)
+H(t) = -\sum_{p} P_t(p) \ln P_t(p)
 \end{equation}
-whereas reinforcing stable patterns focuses the distribution (decreasing entropy) at an exponential rate:
+Substituting \( P_t(p) = \frac{e^{S_{\mathrm{eff}} t}}{Z(t)} \) and simplifying, we find:
 \begin{equation}
-\Delta H_{\text{stability}} \;\propto\; -\,e^{S_{\mathrm{eff}}\,t}
+H(t) = -S_{\mathrm{eff}} t + \ln Z(t)
 \end{equation}
-If the stabilizing feedback outpaces random diffusion, the net result is a persistent reduction in entropy, guiding the system toward ordered, low-entropy configurations characteristic of Bayesian Assembly (BA) dynamics.
+
+In this expression, the term \( -S_{\mathrm{eff}} t \) captures entropy reduction due to stabilizing feedback, driven by the exponential concentration of probabilities on stable patterns. The term \( \ln Z(t) \), by contrast, reflects entropy increase resulting from stochastic fluctuations. In systems with random diffusion, the accessible state space grows sub-exponentially, with \( \ln Z(t) \propto \ln(t) \) capturing this entropy contribution.
+
+This balance between entropy reduction and increase is central to BA system dynamics. When stabilizing feedback dominates, entropy decreases overall, guiding the system toward ordered, low-entropy configurations. However, if stochastic fluctuations dominate, entropy continues to rise, dispersing probabilities and preventing structured order. This dynamic interplay illustrates the conditions under which BA systems transition between order and randomness, highlighting the role of stability in driving emergent complexity.
+
+
 
 \section{Mixing Two BA Systems}
 
@@ -208,16 +217,202 @@ This rule can be interpreted as a Bayesian evolutionary formula:
 \end{equation}
 Stability plays the role of Likelihood in the Bayesian equation because it is a measure of the likelihood of the specific pattern to persist over time, thereby determining its chances of being selected to interact with other patterns in the next generations. This generational update, in turn, drives an evolutionary exploration of the adjacent possible: once a newly available pattern displays sufficiently high node stability, its probability can rise, thus reshaping the distribution of patterns in subsequent generations.
 
-This interpretation of the evolving process aligns with the view of Bayesian probabilities as a hallmark of dynamical systems \cite{le2020equation}, where the distribution of each generation plays the role of the prior, and the posterior emerges as genuinely new distribution, rather than a subjective refinement of a single unknown distribution, allowing novel patterns and interactions to reshape the system over time. The distribution of compounds in each generation is determined by relative frequencies (reflecting a frequentist probability), while the transition to the next generation is driven by a Bayesian update process (reflecting an evolving Bayesian probability).
+This interpretation of the evolving process aligns with the view of Bayesian probabilities as a hallmark of dynamical systems \cite{le2020equation}, where the distribution of each generation plays the role of the prior, and the posterior emerges as a genuinely new distribution, rather than a subjective refinement of a single unknown distribution, allowing novel patterns and interactions to reshape the system over time. The distribution of compounds in each generation is determined by relative frequencies (reflecting a frequentist probability), whereas the transition to the next generation is driven by a Bayesian update process (reflecting an evolving Bayesian probability).
+
+\section{Simulation of Bayesian Assembly and Unconstrained Systems}
+
+Unconstrained systems allow all possible compounds to form with equal likelihood each generation, leading to a combinatorial expansion of the state space. Let $N_t$ be the total number of compounds present in generation $t$. The probability of observing a specific compound $p$ can be approximated by $P_t(p) = \frac{1}{N_t}$. As $t$ increases, $N_t$ grows combinatorially, so $P_t(p) \to 0$ for any single compound. This uniform dispersion implies that no pattern dominates. Entropy in such a system typically remains high or increases as more compounds enter the state space.
+
+To compare the dynamics of unconstrained and BA systems, we developed a simulation framework that models the evolution of compound formation over successive generations. This framework captures the key contrasts between the two regimes: the uniform expansion of state space of the unconstrained system and the stability-driven selection pressures of the BA system. The simulation begins with an initial population of base elements and proceeds through a fixed number of generations. The following pseudocode captures the main steps and shows that the only difference between the unconstrained and BA systems is in setting expiration times for compounds based on their stability:
+
+\begin{center}
+\begin{minipage}{0.9\textwidth}
+\ttfamily
+\begin{verbatim}
+Initialize population with base elements
+For each generation:
+    Replenish base elements in population
+    For each interaction:
+        Randomly select a pair of elements from population
+        Form compound by concatenation and add to population
+        If BA system:
+            Set compound expiration based on S(p)
+    Remove expired elements from population
+    Compact patterns into simplified representations
+    Store population data for analysis
+\end{verbatim}
+\end{minipage}
+\end{center}
+
+The simulation results confirm that the unconstrained system disperses its probabilities over an expanding set of compounds, causing the probability of any specific pattern to vanish. This behavior mirrors a uniform exploration of the combinatorial space while maintaining high entropy. In contrast, the BA system channels probability into a subset of stable compounds. High-stability patterns become attractors, reducing entropy as the system evolves. Figure~\ref{fig:simulation_results} illustrates these differences: while the unconstrained distribution remains broad and diffuse, the BA distribution skews heavily toward stable patterns.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth,height=7cm]{monte-carlo-fits.png}
+    \caption{Comparison of the evolution of the unconstrained system and the BA system. 
+    The unconstrained system exhibits a uniform distribution expanding over the state space, 
+    whereas the BA system creates more copies of high-stability patterns, 
+    thereby inducing order and reducing entropy.}
+    \label{fig:simulation_results}
+\end{figure}
+
+\section{Dynamic Graph Representation and Token Flow Analysis}
+
+To further investigate the dynamics of BA systems, we represent the state of the system in a specific generation as a directed graph, where the nodes correspond to base elements and compounds like $A$, $AB$, $ABA$, $ABC$, and the directed edges represent the interactions that occurred between them. Recall that the base elements $A$, $B$, $C$ are replenished in each generation, initiating a cascade of interactions that propagate "tokens" (shown in Figure~\ref{fig:abc_sim} as the count $N$ of instances or copies of each pattern). Tokens represent the relative probabilities or population shares of patterns at any generation, and token flow describes the probabilistic redistribution of these tokens across nodes in the reaction graph, driven by stability dynamics and interactions, analogous to probability currents in quantum mechanics \cite{feynman1965quantum} and optimal transport in reflecting the macroscopic evolution of the system \cite{villani2008optimal}. The tokens accumulate at the nodes based on the flow dynamics governed by stability (shown in Figure~\ref{fig:abc_sim} as $S$).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\linewidth]{abc_graph.png}
+    \caption{Graph representation of a BA system showing stability (S), and the number of instances or tokens (N) of each base element and compound.}
+    \label{fig:abc_sim}
+\end{figure}
+
+The dynamic graph in Figure~\ref{fig:abc_sim} represents the 7th generation of the simulation shown in Figure~\ref{fig:simulation_results}. The distribution of tokens across the graph reveals insights into the self-reinforcing nature of stability in BA systems. Nodes with higher stability values (\textit{e.g.}, $ABCABA$) attract more tokens, leading to the emergence of dominant patterns. This phenomenon reflects a feedback loop: As tokens accumulate at a stable node, it becomes increasingly likely to dominate subsequent interactions, establishing preferential flow paths through the graph. Consequently, the system's token traffic converges to well-defined routes, concentrating resources on a subset of high-stability patterns while marginalizing less stable ones.
+
+However, the graph may change significantly between generations if a new disruptor node emerges in the system. A disruptor node is characterized by a high stability value and strategic positioning within the graph, enabling it to compete with previously dominant nodes for token traffic. This disruptor can reroute flows, effectively redistributing tokens and breaking established dominance patterns. 
+
+From a physical perspective, the behavior of token flows in the BA system parallels physical phenomena such as those observed in fluid systems, where a new high-conductivity channel can divert flow away from existing pathways. Similarly, in RC circuits, the introduction of a new low-resistance branch redistributes the current, altering the overall system equilibrium. 
+
+Dynamic graphs have been used for switch-level simulation of transistor networks \cite{AdlerCAD}, where graph pathways are dynamically determined by the state of the on transistors, enabling specific connections to guide current flow. Similarly, in BA systems, token flow is governed by stability and probabilistic interactions, determining which nodes persist and propagate.
+
+\subsection{Chemical Examples: Oxidation and Hydrolysis}
+
+To illustrate the principles of BA systems in realistic chemical contexts, we present two examples: the oxidation of iron and the hydrolysis and esterification of acetic acid derivatives. These examples demonstrate how stability-driven selection and probabilistic interactions shape the dynamics of complex chemical systems.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{abc_oxi.png}
+    \caption{Reaction network for iron oxidation, illustrating the stepwise formation of stable and intermediate compounds under stability constraints.}
+    \label{fig:abc_oxi}
+\end{figure}
+
+The oxidation example (Figure~\ref{fig:abc_oxi}) represents a straightforward, abiotically occurring reaction network where iron (\(Fe\)) reacts with oxygen (\(O\)) to form various oxides. Starting with diatomic oxygen (\(O_2\)) formed from base oxygen atoms, the reaction progresses through intermediate oxides such as iron(II) oxide (\(FeO\)) to more stable compounds like hematite (\(Fe_2O_3\)) and magnetite (\(Fe_3O_4\)). Competing side reactions, such as partial oxidation and formation of unstable intermediates, highlight how stability influences the progression of reactions. This example provides a testable setup for validating the role of stability in directing reaction pathways. By assigning stability values to intermediates and products, we can simulate the token flow dynamics and compare them to experimental observations, demonstrating how stability-driven selection operates in an abiotic system.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{abc_hydro.png}
+    \caption{Reaction network for hydrolysis and esterification, illustrating stability-driven selection and competing pathways.}
+    \label{fig:abc_hydro}
+\end{figure}
+
+The hydrolysis example (Figure~\ref{fig:abc_hydro}) involves a lab-testable reaction network centered on the stepwise formation and breakdown of esters. Starting with acetic acid (\(CH_3COOH\)) and methanol (\(CH_3OH\)), the primary pathway includes esterification to form methyl acetate (\(CH_3COOCH_3\)) and subsequent reactions leading to acetic anhydride (\((CH_3CO)_2O\)) and ethyl acetate (\(CH_3COOCH_2CH_3\)). Side reactions, including hydrolysis and reverse reactions, introduce competing flows that reduce stability and divert resources. This reaction network is ideal for validating BA system simulations, as it allows us to assign stability values to intermediates and observe how token flows evolve under varying experimental conditions.
+
+The stabilities in the oxidation and hydrolysis graphs are grounded in their underlying chemistry. Stable products such as hematite in oxidation or methyl acetate in hydrolysis are thermodynamically favored, while intermediates like partial oxides or transient esters have lower stabilities due to less favorable energy profiles. These examples highlight the similarities and distinctions between BA systems and Assembly Theory (AT). While AT focuses on tracing observed objects back to their assembly pathways using the assembly index, BA systems emphasize forward dynamics, showing how stability constraints and probabilistic interactions drive the emergence and persistence of patterns. This forward-looking perspective aligns well with real-world processes, offering a dynamic framework for studying chemical evolution.
+
+Both examples underscore the versatility of BA systems in modeling chemical evolution. The oxidation example offers an abiotic, naturally occurring process that directly aligns with the principles of stability-driven selection. In contrast, the hydrolysis example provides a more complex, experimentally accessible network where competing pathways and stability dynamics can be systematically tested. Together, these examples bridge theoretical and experimental studies of dynamic assembly and information evolution.
+
+\subsection{Organic Chemistry Examples and Their BA System Interpretations}
+\label{sec:organic-ba-examples}
+
+Two reaction graphs from organic chemistry provide illustrative cases for understanding how Bayesian Assembly (BA) systems can model complex pathways at a high level. Although neither example specifically reflects a continuous-flow stirred tank reactor (CFSTR), both showcase how the concept of node stability can guide the formation and persistence of certain molecular arrangements. By assigning relative stability values to each species based on physical and chemical considerations, one can track how the resulting population of intermediates evolves according to the generational dynamics of BA systems.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{abc_nano.png}
+    \caption{Reaction graph for possible Carbon Nanostructure Assembly}
+    \label{fig:abc_nano}
+\end{figure}
+
+Figure~\ref{fig:abc_nano} (an abstract reaction graph) shows a pathway in which simple carbon monomers (C) and hydrogen (H) build successively more complex carbon structures. The early stages involve the formation of C$_2$ (a carbon dimer) or small hydrocarbons like C$_2$H$_4$ (ethylene) and C$_3$H$_6$ (propylene). With sufficient ring closure, benzene (C$_6$H$_6$) emerges and subsequently layers into planar graphene sheets. Ultimately, these sheets can curl to form carbon nanotubes, a high-stability configuration known for remarkable mechanical and electrical properties. Alongside the main path, less stable species, such as cyclic propylene or defective graphene, can appear transiently but typically drop out due to lower persistence.
+
+In a BA interpretation, each compound is assigned a stability $S(p)$ proportional to its capacity for remaining intact or re-forming after partial disruption. The early small molecules (C, H) have baseline stability values. As ring systems and extended lattices form (benzene, graphene, nanotubes), their stability parameters increase, reflecting stronger bonding and lower tendencies to break down. The generational updates in a BA model thus capture how more stable compounds accumulate, shaping the reaction space in ways that favor advanced nanostructures. In contrast, pathways leading to fragile intermediates fade out, illustrating how repeated interactions and node-level stability can bias the overall molecular landscape.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{abc_prerna.png}
+    \caption{Reaction graph for possible pre-RNA Sugar Assembly}
+    \label{fig:abc_prerna}
+\end{figure}
+
+Figure~\ref{fig:abc_prerna} shows another system in which small carbonyl-containing molecules, such as formaldehyde (CH$_2$O), condense to form sugars of increasing chain length. Glycolaldehyde (C$_2$H$_4$O$_2$) and glyceraldehyde (C$_3$H$_6$O$_3$) pave the way toward ribose (C$_5$H$_{10}$O$_5$), a critical building block for RNA. The final phosphorylation step produces ``activated ribose,'' a key precursor in nucleotide formation. As in the previous example, some by-products (branched sugars, unstable intermediates, or cyclic variants) appear momentarily, but generally possess lower stability parameters and thus do not dominate.
+
+Within a BA framework, stability $S(p)$ captures the likelihood that each sugar or intermediate persists through partial reaction cycles. Ribose, for example, attains a relatively high stability once formed, whereas isomeric or degradative pathways lead to compounds with lower stability. Repetitive generational updates favor the compounds that consistently re-emerge, thus incrementally biasing the distribution toward robust sugar structures. This mechanism parallels plausible prebiotic scenarios, where even slight differences in resilience or feedback can drive the system toward certain key biosynthetic intermediates.
+
+These two examples from organic chemistry highlight how stability may play a key role in complex reaction graphs. Compounds with high $S(p)$ increasingly dominate because they persist over multiple interactions and generational updates, effectively capturing resources and reducing system entropy. Unstable or ephemeral intermediates can still appear transiently, but over time they lose representation in the population. The BA perspective thus supplements conventional kinetic modeling by focusing on net generational outcomes and selective retention, rather than detailing every reversible step. In doing so, BA systems reveal how certain ``attractor'' molecules or assemblies can emerge in an otherwise large and branching reaction space, reinforcing the view that stability-driven selection is a powerful force in shaping molecular evolution.
+
+\subsection{Mass Action Kinetics and Forward-Generation Constraints}
+\label{subsec:mak-forward-limitations}
+
+Mass Action Kinetics (MAK) \cite{TuranyiTomlin2014} provides deterministic rate equations for chemical reactions, such as
+\[
+\frac{d[A]}{dt} \;=\; -\,k\, [A]\,[B],
+\]
+where $[A]$ and $[B]$ represent concentrations and $k$ is a rate constant. These equations capture conservation laws for mass and energy and can reflect selection processes under certain conditions. More recent work such as Chemical Organization Theory (COT) \cite{DittrichFenizio2005} emphasizes finding closed and self-maintaining collections of species in a fixed reaction network. Assembly Theory (AT) has employed MAK-like forward models to link object production to assembly indices and copy numbers \cite{walker2023nature}.
+
+MAK inherently allows reactions to run both forward and backward with fixed rate laws, posing a challenge for frameworks like AT and Bayesian Assembly (BA) that emphasize net forward construction or generational updates. The bidirectionality in MAK complicates the notion of a strictly incremental assembly index and is at odds with BA systems’ focus on new patterns persisting if they are sufficiently stable. While MAK excels at describing known reaction networks under equilibrium or near-equilibrium assumptions, it lacks a mechanism for the open-ended discovery of novel compounds central to BA’s approach.
+
+
+BA systems abstract away many of these reversible processes by concentrating on \emph{node} stabilities and net forward probabilities. In principle, stability factors in BA can be treated analogously to rate constants for dominant forward reactions, yet BA retains a probabilistic, adaptive perspective on how compounds emerge and persist. As such, MAK equations can approximate certain stable sub-dynamics in a BA system, but they do not inherently capture the generative or feedback-driven aspects that allow BA systems to evolve beyond a fixed reaction graph. 
+
+
+\subsection{Analogy to Electronic Circuit Simulations}
+\label{subsec:spice-analogy}
+
+To further explore the role of the BA system abstraction, it is worth comparing to other disciplines where first-order ODE's occur frequently. The detailed MAK or CRNT chemical equations for a reaction graph in a well-mixed reactor take the form:
+${\dot{\mathbf{x}}} = \mathbf{A}\,\mathbf{x} + \mathbf{b}$, where the vector \(\mathbf{x}\) represents the concentrations of species, 
+\(\mathbf{A}\) encodes stoichiometric and kinetic-rate constants, and 
+\(\mathbf{b}\) accounts for the continuous replenishment of base elements 
+that drives the system away from thermodynamic equilibrium.
+
+By analogy, in a low-level electronic circuit simulator such as SPICE \cite{SpiceRef}, the evolution of node voltages $\mathbf{v}$ can often be approximated locally by a first-order system:
+$\dot{\mathbf{v}} \;=\; \mathbf{A}\,\mathbf{v} \;+\; \mathbf{b}$,
+where $\mathbf{A}$ encodes device- and network-dependent parameters (e.g., conductances, small-signal transistor gains), and $\mathbf{b}$ represents external currents or voltage sources. This detailed model allows for transient bidirectional flows, capturing the precise device physics at each time step.
+
+In contrast, higher-level switch-level simulation \cite{AdlerCAD} abstracts each transistor network into on/off states and tracks how signals propagate in discrete events. While still recognizing transistor connections and dynamic network changes, it avoids solving the full set of system equations. At an even more abstract gate-level, as discussed by Feynman \cite{FeynmanComp}, logical operations dominate the analysis, and voltages or currents are replaced by idealized binary signals.
+
+In essence, Bayesian Assembly (BA) models sit at a level analogous to gate-level or switch-level abstractions for chemical or other complex reaction networks: the fine details of bidirectional or transient flows may be omitted in favor of net “dominant direction” updates per generation. Just as gate-level logic captures the essential behavior of a circuit without enumerating every electron flow, BA focuses on net forward assembly steps and stability selection, leaving behind a continuous-time, fully reversible system of ODEs. 
+
+\subsection{Economic Example: Industry Ecosystem as a BA System}
+
+This example illustrates a Bayesian Assembly (BA) system applied to an economic context, where base elements represent different types of businesses. Manufacturers (\( A \)), retailers (\( B \)), and logistics providers (\( C \)) act as base elements with stabilities \( S_A, S_B, S_C \) reflecting their persistence in the market. Through successive interactions, these base elements form partnerships (\( AB \), \( AC \), \( BC \)) and evolve into integrated networks (\( ABAC \), \( ABBC \)), as shown in Figure~\ref{fig:ba_economic}. Each stage corresponds to increasingly complex collaborations, where stability-driven selection ensures the persistence of dominant nodes. 
+
+Stable nodes, such as \( AB \) (manufacturer-retailer) and \( ABBC \) (retail-driven networks), act as attractors, accumulating resources (tokens) over generations. Less stable nodes, including failed ventures (\( S=0 \)), dissipate quickly, redistributing tokens to more viable configurations. This process mirrors the dynamics of BA systems, where selection amplifies stable patterns and suppresses randomness, driving the emergence of structured, low-entropy configurations. The economic analogy emphasizes how stability influences token flow, resource allocation, and the formation of hierarchical networks in complex systems.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{abc_eco.png}
+    \caption{Industry ecosystem represented as a BA system, showing the evolution from base businesses (\( A, B, C \)) to partnerships and stable integrated networks (\( ABAC, ABBC \)). Failed ventures represent dissipative nodes.}
+    \label{fig:ba_economic}
+\end{figure}
+
+
+\section{Supply-Demand Perspective of BA Systems}
+
+The dynamics of token flows in BA systems can be intuitively understood through a supply-demand framework. In this perspective, the stability of each node determines its "demand" for tokens, while directed token flows fulfill this demand based on the available "supply" at neighboring nodes. The supply at a node \( p \) is given by:
+\begin{equation}
+\text{Supply}(p) = R_p + \sum_{q \in \text{inputs}(p)} \Delta N_{qp},
+\end{equation}
+where \( R_p \) is the replenishment rate at node \( p \), representing an influx of base elements, and \( \Delta N_{qp} \) is the flow of tokens from input node \( q \) to \( p \). 
+
+Conversely, the demand at node \( p \) depends on its stability, which reflects the node’s ability to persist and attract tokens, and is proportional to contributions from its inputs:
+\begin{equation}
+\text{Demand}(p) = S(p) \cdot \sum_{q \in \text{inputs}(p)} N_q,
+\end{equation}
+where \( S(p) \) represents the stability of node \( p \), and \( N_q \) is the token count at input node \( q \). At equilibrium, supply and demand at each node balance, leading to:
+\begin{equation}
+R_p + \sum_{q \in \text{inputs}(p)} \Delta N_{qp} = S(p) \cdot \sum_{q \in \text{inputs}(p)} N_q.
+\end{equation}
+
+This supply-demand perspective captures the localized dynamics of token redistribution in BA systems. For graphs with uniformly distributed stabilities (\( S(p) = S_0 \) for all nodes), token flows distribute evenly across the graph, reflecting a flat supply-demand relationship. However, when a node has significantly higher stability, token flows concentrate at that node, forming a peak in the supply-demand distribution. In cases where multiple nodes exhibit comparable stabilities, flows split proportionally, generating a distribution with multiple peaks. Finally, in sparse stability landscapes, flows localize around nodes with nonzero stability, creating distinct clusters of token activity.
+
+The supply-demand framework provides a direct and intuitive method for analyzing the redistribution of resources in BA systems. By emphasizing how stability creates "demand" and drives token flows, this approach highlights the key mechanisms through which BA systems achieve self-organization and resource allocation. The framework also demonstrates how stability gradients act as drivers of emergent complexity, ensuring that high-stability nodes attract resources and persist over time.
+
 
 \section{Top-Down vs.\ Bottom-Up Dynamics in BA Systems}
 \label{sec:topdown-bottomup}
 
 Bayesian Assembly (BA) systems exhibit two complementary forms of causality, previously identified as \emph{bottom-up} and \emph{top-down}. From a bottom-up perspective, local probabilistic interactions drive the system's evolution by creating or dissolving patterns. These interactions are regulated by node stability and selection pressures, producing emergent order from initially simple building blocks. 
 
-Once certain patterns become dominant, however, they exert a top-down influence on subsequent generations. These persistent, higher-level structures shape future interactions by catalyzing or constraining the formation of new patterns. Hence, BA systems do not merely accumulate complexity through local rules; they also incorporate feedback from emergent structures that guide (or ``select for'') new configurations. The presence of memory and evolutionary history in these feedback loops distinguishes BA systems from frameworks in which higher-level states simply describe aggregates without influencing the underlying microstates.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\linewidth,height=0.7\linewidth]{images/ba_topdown.png}
+    \caption{Bottom-up and Top-down causality in BA systems}
+    \label{fig:ba_topdown}
+\end{figure}
 
-The contrast with traditional statistical mechanics is informative \cite{landau1980statistical}. In a typical statistical-mechanical setting, macrostates (e.g., temperature, pressure) characterize large-scale properties that reflect averages of microstates; they rarely feed back to alter the fundamental interaction rules among particles. By contrast, the dominant patterns in BA systems play a direct, causal role in shaping micro-level interactions. This effect renders BA systems capable of embedding history and specificity into the very process that generates new patterns, rather than relying on pre-defined energy distributions or equilibrium conditions.
+Once certain patterns become dominant, however, they exert a top-down influence on subsequent generations. These higher-level persistent structures shape future interactions by catalyzing or constraining the formation of new patterns. Hence, BA systems do not just accumulate complexity through local rules; they also incorporate feedback from emergent structures that guide (or ``select for'') new configurations. The presence of memory and evolutionary history in these feedback loops distinguishes BA systems from frameworks in which higher-level states simply describe aggregates without influencing the underlying microstates.
+
+The contrast with traditional statistical mechanics is informative \cite{landau1980statistical}. In a typical statistical-mechanical setting, macrostates (e.g., temperature, pressure) characterize large-scale properties that reflect averages of microstates; they rarely feed back to alter the fundamental interaction rules among particles. In contrast, the dominant patterns in BA systems play a direct, causal role in shaping micro-level interactions. This effect renders BA systems capable of embedding history and specificity into the very process that generates new patterns, rather than relying on pre-defined energy distributions or equilibrium conditions.
 
 Such an explicit interplay between bottom-up and top-down dynamics in BA systems suggests a broader principle for understanding complexity: emergent structures can become causal agents that direct further evolution of the system. This perspective helps explain the accumulation of novel order in contexts from prebiotic chemistry to computational networks, where higher-level assemblies (compounds, motifs, or functional components) increasingly govern local interactions, thereby catalyzing the exploration of new possibilities for growth and adaptation.
 
@@ -391,20 +586,6 @@ Goldberg, D.E. \textit{Genetic Algorithms in Search, Optimization, and Machine L
 \bibitem{holland1975adaptation}
 Holland, J.H. \textit{Adaptation in Natural and Artificial Systems}; University of Michigan Press: Ann Arbor, MI, USA, 1975.
 
-%ref 17
-\bibitem{wolfram1983statistical}
-Wolfram, S. Statistical Mechanics of Cellular Automata. \textit{Rev. Mod. Phys.} \textbf{1983}, \textit{55}, 601–644.
-
-%ref 18
-\bibitem{pauling1960nature}
-Pauling, L. \textit{The Nature of the Chemical Bond}; Cornell University Press: Ithaca, NY, USA, 1960.
-
-%ref 19
-\bibitem{fox2010origin}
-Fox, G. E. 
-Origin and evolution of the ribosome. 
-\textit{Cold Spring Harbor Perspectives in Biology} \textbf{2010}, \textit{2}(9), a003483.
-
 %ref 20
 \bibitem{mcgrayne2011theory}
 McGrayne, S.B. \textit{The Theory That Would Not Die: How Bayes' Rule Cracked the Enigma Code, Hunted Down Russian Submarines, and Emerged Triumphant from Two Centuries of Controversy}; Yale University Press: New Haven, CT, USA, 2011.
@@ -415,6 +596,27 @@ Kauffman, S. \textit{Investigations}; Oxford University Press: New York, NY, USA
 
 \bibitem{le2020equation} N. Le, \textit{The Equation of Knowledge: From Bayes’ Rule to a Unified Philosophy of Science}, Philosophical Press, New York, NY, 2020.
 
+\bibitem{DittrichFenizio2005}
+P.~Dittrich and P.~S.~di Fenizio, ``Chemical organization theory: towards a theory of constructive dynamical systems,'' \emph{arXiv preprint arXiv:q-bio/0501016}, 2005.
+
+
+\bibitem{SpiceRef}
+L.~W.~Nagel and D.~O.~Pederson, ``SPICE (Simulation Program with Integrated Circuit Emphasis),'' 
+{\em University of California, Berkeley}, Memorandum No. ERL-M382, Apr. 1973.
+
+\bibitem{feynman1965quantum}
+Feynman, R. P., \& Hibbs, A. R. (1965). \textit{Quantum Mechanics and Path Integrals}. McGraw-Hill.
+
+\bibitem{villani2008optimal}
+Villani, C. (2008). \textit{Optimal Transport: Old and New}. Springer Science \& Business Media.
+
+
+\bibitem{AdlerCAD} D.~Adler, ``Switch Level Simulation Using Dynamic Graph Algorithms,''
+{\em IEEE Transactions on Computer-Aided Design of Integrated Circuits and Systems}, vol.~10, March~1991.
+
+\bibitem{FeynmanComp}
+R.~P.~Feynman, {\em Feynman Lectures On Computation}, Westview Press, 1996.
+
 %ref 22
 \bibitem{landau1980statistical}
 Landau, L. D., Lifshitz, E. M. \textit{Statistical Physics}; Pergamon Press, 1980.
@@ -422,10 +624,6 @@ Landau, L. D., Lifshitz, E. M. \textit{Statistical Physics}; Pergamon Press, 198
 %ref 23
 \bibitem{bertalanffy1968general}
 Bertalanffy, L. von. (1968). \textit{General System Theory}. New York: George Braziller.
-
-%ref 24
-\bibitem{sutton2018reinforce}
-Sutton, R. S., Barto, A. G. (2018). Reinforcement Learning: An Introduction. MIT Press.
 
 %ref 25
 \bibitem{davies2022selfassembly}
