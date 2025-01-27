@@ -279,31 +279,19 @@ From a physical perspective, the behavior of token flows in the BA system parall
 
 Dynamic graphs have been used for switch-level simulation of transistor networks \cite{AdlerCAD}, where graph pathways are dynamically determined by the state of the on transistors, enabling specific connections to guide current flow. Similarly, in BA systems, token flow is governed by stability and probabilistic interactions, determining which nodes persist and propagate.
 
-\subsection{Chemical Examples: Oxidation and Hydrolysis}
-
-To illustrate the principles of BA systems in realistic chemical contexts, we present two examples: the oxidation of iron and the hydrolysis and esterification of acetic acid derivatives. These examples demonstrate how stability-driven selection and probabilistic interactions shape the dynamics of complex chemical systems.
+\subsection{Chemical Example: Iron Oxidation}
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{abc_oxi.png}
+    \includegraphics[width=1\textwidth,height=0.3\textwidth]{abc_oxi.png}
     \caption{Reaction network for iron oxidation, illustrating the stepwise formation of stable and intermediate compounds under stability constraints.}
     \label{fig:abc_oxi}
 \end{figure}
 
-The oxidation example (Figure~\ref{fig:abc_oxi}) represents a straightforward, abiotically occurring reaction network where iron (\(Fe\)) reacts with oxygen (\(O\)) to form various oxides. Starting with diatomic oxygen \(O_2\) formed from base oxygen atoms, the reaction progresses through intermediate oxides such as iron(II) oxide \(FeO\) to more stable compounds like hematite \(Fe_2O_3\) and magnetite \(Fe_3O_4\). Competing side reactions, such as partial oxidation and formation of unstable intermediates, highlight how stability influences the progression of reactions. This example provides a testable setup for validating the role of stability in directing reaction pathways. By assigning stability values to intermediates and products, we can simulate the token flow dynamics and compare them to experimental observations, demonstrating how stability-driven selection operates in an abiotic system.
+The principles of Bayesian Assembly (BA) systems can be illustrated through the oxidation of iron, a realistic and naturally occurring chemical process. As shown in Figure~\ref{fig:abc_oxi}, the oxidation of iron (\(Fe\)) proceeds through a network of reactions driven by stability constraints. Oxygen (\(O\)) forms diatomic oxygen (\(O_2\)), which reacts with iron to produce a series of oxides, including iron(II) oxide (\(FeO\)), iron(III) oxide (\(Fe_2O_3\), hematite), and iron(II,III) oxide (\(Fe_3O_4\), magnetite). These reactions represent a progression from less stable intermediates to thermodynamically favored compounds. Competing pathways, such as partial oxidation or the formation of unstable intermediates, illustrate how stability shapes the evolution of the system, favoring reactions that lead to more persistent and energetically favorable products.
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=1\textwidth]{abc_hydro.png}
-    \caption{Reaction network for hydrolysis and esterification, illustrating stability-driven selection and competing pathways.}
-    \label{fig:abc_hydro}
-\end{figure}
+In the BA framework, node stability \(S(p)\) quantifies the persistence of each compound, with higher stability values assigned to products like hematite and magnetite due to their robust bonding and lower susceptibility to dissociation. This reaction network provides a testable system for validating the role of stability in driving reaction pathways. By simulating token flow dynamics based on stability values, the framework captures how high-stability compounds emerge and dominate over successive generations, aligning with experimental observations of oxidation processes.
 
-The hydrolysis example (Figure~\ref{fig:abc_hydro}) involves a lab-testable reaction network centered on the stepwise formation and breakdown of esters. Starting with acetic acid \(CH_3COOH\) and methanol \(CH_3OH\), the primary pathway includes esterification to form methyl acetate \(CH_3COOCH_3\) and subsequent reactions leading to acetic anhydride \((CH_3CO)_2O\) and ethyl acetate \(CH_3COOCH_2CH_3\). Side reactions, including hydrolysis and reverse reactions, introduce competing flows that reduce stability and divert resources. This reaction network is ideal for validating BA system simulations, as it allows us to assign stability values to intermediates and observe how token flows evolve under varying experimental conditions.
-
-The stabilities in the oxidation and hydrolysis graphs are grounded in their underlying chemistry. Stable products such as hematite in oxidation or methyl acetate in hydrolysis are thermodynamically favored, while intermediates like partial oxides or transient esters have lower stabilities due to less favorable energy profiles. These examples highlight the similarities and distinctions between BA systems and Assembly Theory (AT). While AT focuses on tracing observed objects back to their assembly pathways using the assembly index, BA systems emphasize forward dynamics, showing how stability constraints and probabilistic interactions drive the emergence and persistence of patterns. This forward-looking perspective aligns well with real-world processes, offering a dynamic framework for studying chemical evolution.
-
-Both examples underscore the versatility of BA systems in modeling chemical evolution. The oxidation example offers an abiotic, naturally occurring process that directly aligns with the principles of stability-driven selection. In contrast, the hydrolysis example provides a more complex, experimentally accessible network where competing pathways and stability dynamics can be systematically tested. Together, these examples bridge theoretical and experimental studies of dynamic assembly and information evolution.
 
 \subsection{Organic Chemistry Examples and Their BA System Interpretations}
 \label{sec:organic-ba-examples}
@@ -312,25 +300,26 @@ Two reaction graphs from organic chemistry provide illustrative cases for unders
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{abc_nano.png}
+    \includegraphics[width=1\textwidth,height=0.45\textwidth]{abc_nano.png}
     \caption{Reaction graph for possible Carbon Nanostructure Assembly}
     \label{fig:abc_nano}
 \end{figure}
 
-Figure~\ref{fig:abc_nano} (an abstract reaction graph) shows a pathway in which simple carbon monomers C and hydrogen H build successively more complex carbon structures. The early stages involve the formation of C$_2$ (a carbon dimer) or small hydrocarbons like C$_2$H$_4$ (ethylene) and C$_3$H$_6$ (propylene). With sufficient ring closure, benzene C$_6$H$_6$ emerges and subsequently layers into planar graphene sheets. Ultimately, these sheets can curl to form carbon nanotubes, a high-stability configuration known for remarkable mechanical and electrical properties. Alongside the main path, less stable species, such as cyclic propylene or defective graphene, can appear transiently but typically drop out due to lower persistence.
+Figure~\ref{fig:abc_nano} illustrates an abstract reaction graph depicting the progressive assembly of carbon-based structures, starting from simple carbon monomers (\( \text{C} \)) and hydrogen atoms (\( \text{H} \)). In the early stages, carbon atoms bond to form dimers (\( \text{C}_2 \)) or small hydrocarbons like ethylene (\( \text{C}_2\text{H}_4 \)). Through additional interactions and stabilization processes, these smaller molecules transition into increasingly complex structures, such as benzene (\( \text{C}_6\text{H}_6 \)), which serves as a precursor for planar graphene sheets (\( \text{C}_n \)). Ultimately, graphene sheets curl into carbon nanotubes (\( \text{C}_n\text{H}_m \)), high-stability configurations characterized by their exceptional mechanical and electrical properties. 
 
-In a BA interpretation, each compound is assigned a stability $S(p)$ proportional to its capacity for remaining intact or re-forming after partial disruption. The early small molecules (C, H) have baseline stability values. As ring systems and extended lattices form (benzene, graphene, nanotubes), their stability parameters increase, reflecting stronger bonding and lower tendencies to break down. The generational updates in a BA model thus capture how more stable compounds accumulate, shaping the reaction space in ways that favor advanced nanostructures. In contrast, pathways leading to fragile intermediates fade out, illustrating how repeated interactions and node-level stability can bias the overall molecular landscape.
+The main pathway emphasizes the gradual increase in structural complexity and stability. Alongside this progression, less stable intermediates, such as defective graphene or transient molecules, may arise but typically do not persist due to lower stability. These transient species reflect pathways that are accessible in the reaction space but are pruned over successive iterations. Here, stability \( S(p) \) plays a central role in determining the persistence and influence of each compound. Simple elements (\( \text{C} \), \( \text{H} \)) and early products (\( \text{C}_2 \), \( \text{C}_2\text{H}_4 \)) possess baseline stability values, representing their shorter lifetimes and higher turnover rates. As more complex compounds form, their stability parameters increase, reflecting stronger bonding, lower dissociation rates, and greater resistance to perturbation. Generational updates in a BA model dynamically favor the accumulation of these high-stability patterns, leading to the dominance of advanced nanostructures. In contrast, low-stability pathways fade over time, illustrating how stability-driven selection sculpts the molecular landscape and guides the emergence of ordered, complex systems.
+
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth]{abc_prerna.png}
+    \includegraphics[width=1\textwidth,height=0.4\textwidth]{abc_prerna.png}
     \caption{Reaction graph for possible pre-RNA Sugar Assembly}
     \label{fig:abc_prerna}
 \end{figure}
 
-Figure~\ref{fig:abc_prerna} shows another system in which small carbonyl-containing molecules, such as formaldehyde CH$_2$O, condense to form sugars of increasing chain length. Glycolaldehyde C$_2$H$_4$O$_2$ and glyceraldehyde C$_3$H$_6$O$_3$ pave the way toward ribose C$_5$H$_{10}$O$_5$, a critical building block for RNA. The final phosphorylation step produces ``activated ribose,'' a key precursor in nucleotide formation. As in the previous example, some by-products (branched sugars, unstable intermediates, or cyclic variants) appear momentarily, but generally possess lower stability parameters and thus do not dominate.
+Figure~\ref{fig:abc_prerna} illustrates a simplified reaction network where small carbonyl-containing molecules, such as formaldehyde (CH$_2$O), undergo pairwise interactions to form sugars of increasing complexity. The pathway begins with the condensation of formaldehyde into glycolaldehyde (C$_2$H$_4$O$_2$), which can interact further to form intermediate compounds, such as a dimer of formaldehyde and glycolaldehyde. These intermediates then serve as precursors to ribose (C$_5$H$_{10}$O$_5$), a key sugar and a crucial building block for RNA. Alongside the main reaction pathway, side reactions lead to the formation of less stable by-products, such as branched sugars, which typically dissipate due to their lower persistence.
 
-Within a BA framework, stability $S(p)$ captures the likelihood that each sugar or intermediate persists through partial reaction cycles. Ribose, for example, attains a relatively high stability once formed, whereas isomeric or degradative pathways lead to compounds with lower stability. Repetitive generational updates favor the compounds that consistently re-emerge, thus incrementally biasing the distribution toward robust sugar structures. This mechanism parallels plausible prebiotic scenarios, where even slight differences in resilience or feedback can drive the system toward certain key biosynthetic intermediates.
+In this Bayesian Assembly (BA) framework, stability $S(p)$ quantifies the likelihood that each compound persists over successive reaction cycles. Ribose, for instance, achieves a high stability once formed, enabling its accumulation over generations. By contrast, transient intermediates and less stable by-products, such as branched sugars, quickly dissipate and contribute minimally to the evolving population. 
 
 These two examples from organic chemistry highlight how stability may play a key role in complex reaction graphs. The BA perspective supplements conventional kinetic modeling by focusing on net generational outcomes and selective retention, rather than detailing every reversible step. In doing so, BA systems reveal how certain ``attractor'' molecules or assemblies can emerge in an otherwise large and branching reaction space, reinforcing the view that stability-driven selection is a powerful force in shaping molecular evolution.
 
@@ -371,12 +360,12 @@ This example illustrates a Bayesian Assembly (BA) system applied to an economic 
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{abc_eco.png}
+    \includegraphics[width=1\textwidth]{abc_eco.png}
     \caption{Industry ecosystem represented as a BA system, showing the evolution from base businesses (\( A, B, C \)) to partnerships and stable integrated networks (\( ABAC, ABBC \)).}
     \label{fig:ba_economic}
 \end{figure}
 
-Stable nodes, such as \( AB \) (manufacturer-retailer) and \( ABBC \) (retail-driven networks), act as attractors, accumulating resources (tokens) over generations. Less stable nodes, including failed ventures (\( S=0 \)), dissipate quickly, redistributing tokens to more viable configurations. This process mirrors the dynamics of BA systems, where selection amplifies stable patterns and suppresses randomness, driving the emergence of structured, low-entropy configurations. The economic analogy emphasizes how stability influences token flow, resource allocation, and the formation of hierarchical networks in complex systems. The tokens on this graph (individual companies) will naturally flock to configurations that are more stable and persistent, representing more business opportunities.
+Stable nodes, such as \( AB \) (manufacturer-retailer) and \( ABBC \) (retail-driven networks), act as attractors, accumulating resources (tokens) over generations. Less stable nodes, including failed ventures (\( S=0 \)), dissipate quickly, redistributing tokens to more viable configurations. This process mirrors the dynamics of BA systems, where selection amplifies stable patterns and suppresses randomness, driving the emergence of structured, low-entropy configurations. The economic analogy emphasizes how stability influences token flow, resource allocation, and the formation of hierarchical networks in complex systems. The tokens in this graph (individual companies) will naturally flow to configurations that are more stable and persistent, representing more business opportunities.
 
 \section{Top-Down vs.\ Bottom-Up Dynamics in BA Systems}
 \label{sec:topdown-bottomup}
