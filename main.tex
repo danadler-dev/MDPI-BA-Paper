@@ -378,29 +378,6 @@ This example illustrates a Bayesian Assembly (BA) system applied to an economic 
 
 Stable nodes, such as \( AB \) (manufacturer-retailer) and \( ABBC \) (retail-driven networks), act as attractors, accumulating resources (tokens) over generations. Less stable nodes, including failed ventures (\( S=0 \)), dissipate quickly, redistributing tokens to more viable configurations. This process mirrors the dynamics of BA systems, where selection amplifies stable patterns and suppresses randomness, driving the emergence of structured, low-entropy configurations. The economic analogy emphasizes how stability influences token flow, resource allocation, and the formation of hierarchical networks in complex systems. The tokens on this graph (individual companies) will naturally flock to configurations that are more stable and persistent, representing more business opportunities.
 
-
-\section{Supply-Demand Perspective of BA Systems}
-
-The dynamics of token flows in BA systems can be intuitively understood through a supply-demand framework. In this perspective, the stability of each node determines its "demand" for tokens, while directed token flows fulfill this demand based on the available "supply" at neighboring nodes. The supply at a node \( p \) is given by:
-\begin{equation}
-\text{Supply}(p) = R_p + \sum_{q \in \text{inputs}(p)} \Delta N_{qp},
-\end{equation}
-where \( R_p \) is the replenishment rate at node \( p \), representing an influx of base elements, and \( \Delta N_{qp} \) is the flow of tokens from input node \( q \) to \( p \). 
-
-Conversely, the demand at node \( p \) depends on its stability, which reflects the node’s ability to persist and attract tokens, and is proportional to contributions from its inputs:
-\begin{equation}
-\text{Demand}(p) = S(p) \cdot \sum_{q \in \text{inputs}(p)} N_q,
-\end{equation}
-where \( S(p) \) represents the stability of node \( p \), and \( N_q \) is the token count at input node \( q \). At equilibrium, supply and demand at each node balance, leading to:
-\begin{equation}
-R_p + \sum_{q \in \text{inputs}(p)} \Delta N_{qp} = S(p) \cdot \sum_{q \in \text{inputs}(p)} N_q.
-\end{equation}
-
-This supply-demand perspective captures the localized dynamics of token redistribution in BA systems. For graphs with uniformly distributed stabilities \( S(p) = S_0 \) for all nodes, token flows distribute evenly across the graph, reflecting a flat supply-demand relationship. However, when a node has significantly higher stability, token flows concentrate at that node, forming a peak in the supply-demand distribution. In cases where multiple nodes exhibit comparable stabilities, flows split proportionally, generating a distribution with multiple peaks. Finally, in sparse stability landscapes, flows localize around nodes with nonzero stability, creating distinct clusters of token activity.
-
-The supply-demand framework provides a direct and intuitive method for analyzing the redistribution of resources in BA systems. By emphasizing how stability creates "demand" and drives token flows, this approach highlights the key mechanisms through which BA systems achieve self-organization and resource allocation. The framework also demonstrates how stability gradients act as drivers of emergent complexity, ensuring that high-stability nodes attract resources and persist over time.
-
-
 \section{Top-Down vs.\ Bottom-Up Dynamics in BA Systems}
 \label{sec:topdown-bottomup}
 
