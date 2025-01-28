@@ -106,7 +106,7 @@ Bayesian Assembly (BA) systems distinguish themselves by their narrow focus on s
 
 \section{BA System Fundamentals}
 
-We define Bayesian Assembly (BA) Systems as follows: a population of base elements \( A, B, C, \dots \) capable of forming compounds through local interactions of unspecified forces. Compounds are represented as concatenations of base elements and other compounds, thus they can be repetitive and recursive. The elements could exist in our physical universe, or in an abstract universe. The stability of compounds is an abstraction that determines only one thing: how many generations they will persist. For example, if compound AAB has a stability of 10 then it will persist for 10 generations and then disappear. In contrast to bidirectional models like MAK, where dissipation of patterns is modeled explicitly, BA systems just allow the patterns to disappear. Since we do not constrain the interactions themselves in any way, compounds that have a stability of 0 may get created and destroyed in the same generation, which simulates impossible interactions. We allow the base elements to regenerate at a constant rate in every generation. This ensures a continuous influx of resources, preventing stagnation and enabling sustained exploration of the state space. This assumption mirrors the continuous flow stirred tank reactor (CFSTR) methodology commonly employed in chemical reaction modeling, where reactants are replenished at a constant rate to maintain steady-state conditions \cite{fogler1999chemical}. The analogy highlights the foundational role of resource replenishment in both theoretical and experimental systems for exploring dynamic behaviors and emergent patterns.
+We define Bayesian Assembly (BA) Systems as follows: a population of base elements \( A, B, C, \dots \) capable of forming compounds through local interactions of unspecified forces. Compounds are represented as strings formed by concatenating base elements and existing compounds, allowing for repetitive and recursive patterns. The elements could exist in our physical universe, or in an abstract universe. The stability of compounds is an abstraction that determines only one thing: how many generations they will persist. For example, if compound AAB has a stability of 10 then it will persist for 10 generations and then disappear. In contrast to bidirectional models like MAK, where dissipation of patterns is modeled explicitly, BA systems just allow the patterns to disappear. Since we do not constrain the interactions themselves in any way, compounds that have a stability of 0 may get created and destroyed in the same generation, which simulates impossible interactions. We allow the base elements to regenerate at a constant rate in every generation. This ensures a continuous influx of resources, preventing stagnation and enabling sustained exploration of the state space. This assumption mirrors the continuous flow stirred tank reactor (CFSTR) methodology commonly employed in chemical reaction modeling, where reactants are replenished at a constant rate to maintain steady-state conditions \cite{fogler1999chemical}. The analogy highlights the foundational role of resource replenishment in both theoretical and experimental systems for exploring dynamic behaviors and emergent patterns.
 
 \begin{figure}[htp]
     \centering
@@ -266,7 +266,7 @@ To further investigate the dynamics of BA systems, we represent the state of the
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.5\linewidth]{abc_graph.png}
+    \includegraphics[width=0.7\linewidth]{abc_graph.png}
     \caption{Graph representation of a BA system showing stability (S), and the number of instances or tokens (N) of each base element and compound.}
     \label{fig:abc_sim}
 \end{figure}
@@ -283,7 +283,7 @@ Dynamic graphs have been used for switch-level simulation of transistor networks
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth,height=0.3\textwidth]{abc_oxi.png}
+    \includegraphics[width=1\textwidth,height=0.4\textwidth]{abc_oxi.png}
     \caption{Reaction network for iron oxidation, illustrating the stepwise formation of stable and intermediate compounds under stability constraints.}
     \label{fig:abc_oxi}
 \end{figure}
@@ -300,12 +300,12 @@ Two reaction graphs from organic chemistry provide illustrative cases for unders
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=1\textwidth,height=0.45\textwidth]{abc_nano.png}
+    \includegraphics[width=1\textwidth,height=0.55\textwidth]{abc_nano.png}
     \caption{Reaction graph for possible Carbon Nanostructure Assembly}
     \label{fig:abc_nano}
 \end{figure}
 
-Figure~\ref{fig:abc_nano} illustrates an abstract reaction graph depicting the progressive assembly of carbon-based structures, starting from simple carbon monomers (\( \text{C} \)) and hydrogen atoms (\( \text{H} \)). In the early stages, carbon atoms bond to form dimers (\( \text{C}_2 \)) or small hydrocarbons like ethylene (\( \text{C}_2\text{H}_4 \)). Through additional interactions and stabilization processes, these smaller molecules transition into increasingly complex structures, such as benzene (\( \text{C}_6\text{H}_6 \)), which serves as a precursor for planar graphene sheets (\( \text{C}_n \)). Ultimately, graphene sheets curl into carbon nanotubes (\( \text{C}_n\text{H}_m \)), high-stability configurations characterized by their exceptional mechanical and electrical properties. 
+Figure~\ref{fig:abc_nano} illustrates an abstract reaction graph showing the progressive assembly of carbon-based structures, starting from simple carbon monomers (\( \text{C} \)) and hydrogen atoms (\( \text{H} \)). In the early stages, carbon atoms bond to form dimers (\( \text{C}_2 \)) or small hydrocarbons like ethylene (\( \text{C}_2\text{H}_4 \)). Through additional interactions and stabilization processes, these smaller molecules transition into increasingly complex structures, such as benzene (\( \text{C}_6\text{H}_6 \)), which serves as a precursor for planar graphene sheets (\( \text{C}_n \)). Ultimately, graphene sheets curl into carbon nanotubes (\( \text{C}_n\text{H}_m \)), high-stability configurations characterized by their exceptional mechanical and electrical properties. 
 
 The main pathway emphasizes the gradual increase in structural complexity and stability. Alongside this progression, less stable intermediates, such as defective graphene or transient molecules, may arise but typically do not persist due to lower stability. These transient species reflect pathways that are accessible in the reaction space but are pruned over successive iterations. Here, stability \( S(p) \) plays a central role in determining the persistence and influence of each compound. Simple elements (\( \text{C} \), \( \text{H} \)) and early products (\( \text{C}_2 \), \( \text{C}_2\text{H}_4 \)) possess baseline stability values, representing their shorter lifetimes and higher turnover rates. As more complex compounds form, their stability parameters increase, reflecting stronger bonding, lower dissociation rates, and greater resistance to perturbation. Generational updates in a BA model dynamically favor the accumulation of these high-stability patterns, leading to the dominance of advanced nanostructures. In contrast, low-stability pathways fade over time, illustrating how stability-driven selection sculpts the molecular landscape and guides the emergence of ordered, complex systems.
 
