@@ -142,7 +142,7 @@ Stability influences the dynamics of the system by determining how long a patter
 
 In simulations of real-world scenarios, the values of \(S(p)\) would reflect the underlying physical, chemical, or even economic or social principles. In a chemical context, for example, these stability factors might be derived from binding energies, reaction rate constants, or free energies of formation. In an economic model, they could represent relative cost efficiencies or market resilience. In each case, \(S(p)\) encodes the notion of persistence in the relevant domain: the likelihood that a given compound, pattern, or agent survives long enough to interact and persist into the next generation. Unlike the population distribution, which evolves dynamically based on interactions, the stability distribution remains constant or changes only gradually. 
 
-\subsection{Combined Role of Population and Stability Distributions}
+\subsection{Compound Persistence and Creation}
 
 The probability of a pattern at generation \(t+1\) arises from two distinct processes:
 \emph{persistence} of existing patterns and \emph{creation} of new copies. First, if a pattern \(p\) already exists at time \(t\), its ability to survive depends on its \emph{stability}:
@@ -159,7 +159,9 @@ Here, \(P_t(p)\) is the pattern's probability at generation~\(t\), and \(S_t(p)\
 \;=\;
 \sum_{(q,r)\,\to\,p}\;P_t(q)\,P_t(r),
 \end{equation}
-where the notation \(\,(q,r)\to p\) indicates that \(p\) forms from combining patterns \(q\) and \(r\). This term captures how new copies of \(p\) appear whenever its reactants \(q\) and \(r\) are sufficiently probable within the population. For example, if there are copies of $AB, A, BA$ in the population, then $ABA$ can be formed by: $AB + A \to ABA$ or $A + BA \to ABA$. To obtain the final probability distribution at generation \(t+1\), we \emph{normalize} these contributions across all patterns:
+where the notation \(\,(q,r)\to p\) indicates that \(p\) forms from combining patterns \(q\) and \(r\). This term captures how new copies of \(p\) appear whenever its reactants \(q\) and \(r\) are sufficiently probable within the population. For example, if there are copies of $AB, A, BA$ in the population, then $ABA$ can be formed by: $AB + A \to ABA$ or $A + BA \to ABA$. 
+
+To obtain the final probability distribution at generation \(t+1\), we \emph{normalize} these contributions across all patterns:
 \begin{equation}
 \label{eq:full-ba-update}
 P_{t+1}(p)
@@ -351,25 +353,16 @@ where $[A]$ and $[B]$ represent concentrations and $k$ is a rate constant. These
 
 MAK inherently allows reactions to run both forward and backward with fixed-rate laws, posing a challenge for assembly frameworks like AT and BA that emphasize net forward construction. Although MAK excels at describing known reaction networks under equilibrium or near-equilibrium assumptions, it lacks a mechanism for the open discovery of novel compounds central to BA’s approach.
 
-BA systems abstract away many of these reversible processes by concentrating on \emph{node} stabilities and net forward probabilities. In principle, stability factors in BA can be treated analogously to rate constants for dominant forward reactions, yet BA retains a probabilistic, adaptive perspective on how compounds emerge and persist. As such, MAK equations can approximate certain stable sub-dynamics in a BA system, but they do not inherently capture the generative or feedback-driven aspects that allow BA systems to evolve beyond a fixed reaction graph. 
-
-
 \subsection{Analogy to Electronic Circuit Simulations}
 \label{subsec:spice-analogy}
 
-To further explore the role of the BA system abstraction, it is worth comparing to other disciplines where first-order ODE's occur frequently. The detailed MAK chemical equations for a reaction graph in a well-mixed reactor take the form:
-${\dot{\mathbf{x}}} = \mathbf{A}\,\mathbf{x} + \mathbf{b}$, where the vector \(\mathbf{x}\) represents the concentrations of species, 
-\(\mathbf{A}\) encodes stoichiometric and kinetic-rate constants, and 
-\(\mathbf{b}\) accounts for the continuous replenishment of base elements 
-that drives the system away from thermodynamic equilibrium.
+In MAK models species concentrations evolve as 
+$\dot{\mathbf{x}} = \mathbf{A}\,\mathbf{x} + \mathbf{b}$, where \(\mathbf{x}\) represents species concentrations, \(\mathbf{A}\) encodes stoichiometric and kinetic-rate constants, and \(\mathbf{b}\) accounts for base-element replenishment, driving the system away from thermodynamic equilibrium. A similar formulation appears in electronic circuit simulation, where node voltages evolve as 
+$\dot{\mathbf{v}} = \mathbf{A}\,\mathbf{v} + \mathbf{b}$, with \(\mathbf{A}\) capturing conductances and small-signal transistor gains, and \(\mathbf{b}\) representing external sources. These models resolve bidirectional flows and fine-grained transient dynamics at each time step.
 
-By analogy, in a low-level electronic circuit simulator such as SPICE \cite{SpiceRef}, the evolution of node voltages $\mathbf{v}$ can often be approximated locally by a first-order system:
-$\dot{\mathbf{v}} \;=\; \mathbf{A}\,\mathbf{v} \;+\; \mathbf{b}$,
-where $\mathbf{A}$ encodes device- and network-dependent parameters (e.g. conductances, gains in small-signal transistors), and $\mathbf{b}$ represents external currents or voltage sources. This detailed model allows for transient bidirectional flows, capturing the precise device physics at each time step.
+Higher-level abstractions, such as switch-level simulation \cite{AdlerCAD}, forego solving the full system of ODEs, instead tracking discrete state transitions. At an even coarser gate level \cite{FeynmanComp}, circuits are modeled as idealized logical operations, discarding continuous voltage dynamics.
 
-In contrast, a higher-level switch-level simulator \cite{AdlerCAD} abstracts each transistor network into on/off states and tracks how signals propagate in discrete events. While still recognizing transistor connections and dynamic network changes, it avoids solving the full set of system equations. At an even more abstract gate-level \cite{FeynmanComp}, logical operations dominate the analysis, and voltages or currents are replaced by idealized binary signals.
-
-In essence, Bayesian Assembly (BA) models operate at a level analogous to gate-level or switch-level simulation abstractions for chemical or other complex reaction networks: the fine details of bidirectional or transient flows may be omitted in favor of net 'dominant direction' updates per generation. Just as gate-level logic captures the essential behavior of a circuit without enumerating every electron flow, BA focuses on net forward assembly steps and stability selection, leaving behind a continuous-time, fully reversible system of ODEs. 
+BA systems adopt a similarly abstracted perspective: rather than modeling bidirectional reaction flows explicitly, they capture dominant generational updates, analogous to switch- or gate-level simulation in circuits. Stability-driven selection replaces continuous-time reversibility, focusing on net forward assembly steps that determine the persistence and evolution of patterns.
 
 \subsection{Economic Example: Industry Ecosystem as a BA System}
 
