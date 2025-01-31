@@ -220,27 +220,38 @@ where \( \text{Persist}(p) = P_t(p) S(p) \) represents the survival of an existi
 
 This process parallels Bayesian updating: the prior distribution \( P_t(p) \) is modified by stability-weighted persistence and new combinatorial interactions, yielding a posterior distribution \( P_{t+1}(p) \) that governs the next generation. Unlike static Bayesian inference, where a fixed dataset refines a probability estimate, BA systems dynamically reshape their state space, allowing for genuine emergence. The frequentist probability of patterns within a generation reflects observed occurrences, but transitions between generations follow an evolving Bayesian update, demonstrating how stability-driven selection and probabilistic interactions drive the system toward structured complexity \cite{le2020equation}.
 
+\subsection{Do BA Systems Truly Evolve?}
+
+A natural question arises: do BA systems genuinely evolve, or is "evolution" merely an analogy? While BA systems lack explicit self-replication at the level of individual instances of a pattern $p_i$, they exhibit population-level dynamics that are mathematically indistinguishable from classical evolutionary processes. The fundamental mechanism driving this behavior is that more copies of $p$ are sustainably created from precursor patterns, leading to an increasing relative abundance $N_p$ in the population. This, in turn, grants $p$ more opportunities to participate in subsequent reactions, reinforcing its presence over generations. Moreover, the stability function $S(p)$ ensures that higher-stability patterns persist longer before being degraded or replaced, further amplifying their representation. These dynamics align precisely with the principles of fitness-weighted selection in evolutionary systems, where persistence and reproductive opportunity drive the emergence of dominant patterns. Since the probability of $p$'s continued presence is explicitly governed by its relative abundance and stability in a roulette-wheel selection process, we assert that BA systems exhibit genuine evolutionary behavior—not as a mere analogy, but as a mathematical inevitability.
+
+
 \section{Stability Imbalances in Nature}
 
-The BA theoretical model is motivated by the observable reality that our universe exhibits extreme disparities in stability across physical systems, ranging from fleeting nuclear states to gravitationally bound structures that persist for billions of years. These variations in binding energy and lifespan shape the formation of low-entropy structures, including biological ecosystems and crystalline solids. For instance, covalent bonds, far stronger than weak nuclear interactions, allow organic molecules like diamond to remain stable over geological timescales, whereas less stable bonds degrade rapidly. Similarly, strong nuclear forces maintain atomic nuclei for trillions of years, while gravitational systems such as planets and galaxies persist over cosmological timescales. Local environmental factors—including temperature, quantum effects, pressure, and catalysis—further modulate these stability dynamics, influencing the emergence and persistence of ordered structures.
+The abstract BA model is motivated by the universe’s vast stability disparities, from fleeting nuclear states to gravitationally bound structures lasting billions of years. These variations in binding energy, environmental interactions, and system resilience may dictate the formation and persistence of low-entropy structures, from molecular networks to planetary systems. Covalent bonds gain longevity in extended lattices like diamond and graphene, while geological formations evolve over millions of years under pressure and erosion. On cosmological scales, gravitationally bound systems, including planetary and galactic structures, persist across epochs, underscoring the fundamental role of stability in natural organization.
 
-\begin{table}[ht]
+Beyond simple bond strength, the persistence of structures is influenced by factors such as spatial arrangements, catalytic reinforcement, feedback loops, and hierarchical assembly. Biological molecules, for instance, often derive stability not merely from strong covalent bonds but also from folded conformations, cooperative interactions, and self-repair mechanisms. Similarly, geological formations maintain their integrity over deep time due to self-reinforcing stress distributions and dynamic equilibrium with their environment. Table~\ref{tab:binding-forces} summarizes a broader range of stability-driven phenomena, highlighting their characteristic strengths and lifetimes across multiple scales.
+
+
+\begin{table}[H]
 \centering
-\caption{Representative Binding Forces in Nature with Their Relative Strengths and Typical Lifetimes}
+\caption{Representative Stability Mechanisms in Nature and Their Typical Lifetimes.}
 \label{tab:binding-forces}
-\footnotesize
-\begin{tabularx}{\textwidth}{l@{\extracolsep{4pt}}c@{\extracolsep{4pt}}X}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
 \toprule
-\textbf{Force Type} & \textbf{Relative Strength (vs.\ Gravity)} & \textbf{Typical Lifetime} \\
+\textbf{Mechanism} & \textbf{Relative Strength} & \textbf{Typical Lifetime} \\
 \midrule
-Weak Nuclear & $10^{25}\,\times$ gravity & Microseconds to minutes \\
-Electromagnetic (Covalent Bonds) & $10^{36}\,\times$ gravity & Seconds to billions of years \\
-Strong Nuclear (Stable Nuclei) & $10^{38}\,\times$ gravity & Millions to trillions of years \\
-Gravitational (Planets, Stars) & Baseline ($1\times$) & Millions to billions of years \\
+Weak Nuclear (Beta Decay, Particle Resonances) & $10^{25}\times$ gravity & Microseconds to minutes \\
+Covalent Bonds (Organic Molecules, Crystals) & $10^{36}\times$ gravity & Seconds to billions of years \\
+Strong Nuclear (Stable Nuclei, Radioactive Decay) & $10^{38}\times$ gravity & Millions to trillions of years \\
+Hydrogen Bonding (DNA, Protein Folding) & $10^{30}\times$ gravity & Picoseconds to seconds \\
+Ionic Bonds (Salts, Minerals) & $10^{32}\times$ gravity & Seconds to millennia \\
+Geological Stability (Tectonic Plates, Mountains) & $10^{40}\times$ gravity & Thousands to billions of years \\
+Gravitational (Planets, Stars, Galaxies) & Baseline ($1\times$) & Millions to billions of years \\
 \bottomrule
 \end{tabularx}
 \end{table}
 
+Table \ref{tab:binding-forces} illustrates how stability is not solely a function of bond strength but arises from evolved hierarchical structures, environmental effects, and self-reinforcing dynamics. In a BA system, high-stability patterns accumulate over generations, biasing the reaction landscape towards configurations that persist. This provides a simplified conceptual model for understanding how long-lived low-entropy structures emerge in nature through differential stability selection, whether in chemical systems, geological formations, or cosmic architecture.
 
 \section{Simulation of Bayesian Assembly and Unconstrained Systems}
 
