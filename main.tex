@@ -106,12 +106,12 @@ Bayesian Assembly (BA) systems distinguish themselves by their narrow focus on s
 
 \section{BA System Fundamentals}
 
-We define Bayesian Assembly (BA) Systems as follows: a population of base elements \( A, B, C, \dots \) capable of forming compounds through local interactions of unspecified forces. Compounds are represented as strings formed by concatenating base elements and existing compounds, allowing for repetitive and recursive patterns. The elements could exist in our physical universe, or in an abstract universe. The stability of compounds is an abstraction that determines only one thing: how many generations they will persist. For example, if compound AAB has a stability of 10 then it will persist for 10 generations and then disappear. In contrast to bidirectional models like MAK, where dissipation of patterns is modeled explicitly, BA systems just allow the patterns to disappear. Since we do not constrain the interactions themselves in any way, compounds that have a stability of 0 may get created and destroyed in the same generation, which simulates impossible interactions. We allow the base elements to regenerate at a constant rate in every generation. This ensures a continuous influx of resources, preventing stagnation and enabling sustained exploration of the state space. This assumption mirrors the continuous flow stirred tank reactor (CFSTR) methodology commonly employed in chemical reaction modeling, where reactants are replenished at a constant rate to maintain steady-state conditions \cite{fogler1999chemical}. The analogy highlights the foundational role of resource replenishment in both theoretical and experimental systems for exploring dynamic behaviors and emergent patterns.
+We define Bayesian Assembly (BA) systems as follows: a population of base elements \( A, B, C, \dots \) capable of forming compounds through local interactions of unspecified forces. Compounds are represented as strings formed by concatenating base elements and existing compounds, allowing for repetitive and recursive patterns. The elements could exist in our physical universe, or in an abstract universe. The stability of compounds is an abstraction that determines only one thing: how many generations they will persist. For example, if compound AAB has a stability of 10 then it will persist for 10 generations and then disappear. In contrast to bidirectional models like MAK, where dissipation of patterns is modeled explicitly, BA systems eliminate expired patterns. Since we do not constrain the interactions themselves in any way, compounds that have a stability of 0 may get created and destroyed in the same generation, which simulates impossible interactions. We allow the base elements to regenerate at a constant rate in each generation. This ensures a continuous influx of resources, preventing stagnation and enabling sustained exploration of the state space. This assumption mirrors the continuous flow stirred tank reactor (CFSTR) methodology commonly employed in chemical reaction modeling, where reactants are replenished at a constant rate to maintain steady-state conditions \cite{fogler1999chemical}. The analogy highlights the foundational role that resource replenishment plays in both theoretical and experimental systems in exploring dynamic behaviors and emergent patterns.
 
 \begin{figure}[htp]
     \centering
-    \includegraphics[height=4cm]{ba_cfstr}
-    \caption{BA clocked equivalent of a Continuous Flow Stirred Tank Reactor (CFSTR)}
+    \includegraphics[height=4.5cm]{ba_cfstr}
+    \caption{Discrete BA analogue of a chemical Continuous Flow Stirred Tank Reactor (CFSTR)}
     \label{fig:ba_cfstr}
 \end{figure}
 
@@ -126,11 +126,11 @@ The following simulation shows a different BA system with a population of 3 elem
     \label{fig:pat_1}
 \end{figure}
 
-Where is Maxwell's demon \cite{leff2002maxwell} hiding in this example, driving it towards a low-entropy state? As we saw, the answer lies in the roulette wheel. Compounds that persist longer have more chances to interact. As their frequency in the population grows, their chances to interact grow even more. In Evolutionary Dynamics, this is called fitness-proportionate selection \cite{back1996evolutionary} or roulette wheel selection \cite{goldberg1989genetic} \cite{holland1975adaptation}.
+Where is Maxwell's demon \cite{leff2002maxwell} hiding in this example, driving it towards a low-entropy state? As we saw, the answer lies in the roulette wheel. Compounds that persist longer have more chances to interact. As their frequency in the population increases, their chances to interact grow even more. In Evolutionary Dynamics, this is called fitness-proportionate selection \cite{back1996evolutionary} or roulette wheel selection \cite{goldberg1989genetic} \cite{holland1975adaptation}.
 
 \section{Dual Probability Distributions Governing BA Systems}
 
-BA systems can be effectively described by two interdependent probability distributions: the \textbf{population distribution}, which represents the relative abundance of patterns in the system, and the \textbf{stability distribution}, which quantifies the stable lifetime of successful compounds. The population distribution reflects the probabilities of patterns at any given generation \( t \). Let \( P_t(p) \) represent the probability of pattern \( p \) in the population at time \( t \):
+BA systems can be effectively described by two interdependent probability distributions: the \textbf{population distribution}, which represents the relative abundance of patterns in the system, and the \textbf{stability distribution}, which quantifies the stable lifetime of successful compounds. The population distribution reflects the probabilities of patterns in any given generation \( t \). Let \( P_t(p) \) represent the probability of the pattern \( p \) in the population at time \( t \):
 \[
 P_t(p) = \frac{N_t(p)}{\sum_{q \in P} N_t(q)}
 \]
@@ -144,53 +144,56 @@ In simulations of real-world scenarios, the values of \(S(p)\) would reflect the
 
 \subsection{Combined Role of Population and Stability Distributions}
 
-Together, the population and stability distributions determine the dynamics of the system. The full probability expression for the distribution at the next generation, including the normalization denominator, is:
+The probability of a pattern at generation \(t+1\) arises from two distinct processes:
+\emph{persistence} of existing patterns and \emph{creation} of new copies. First, if a pattern \(p\) already exists at time \(t\), its ability to survive depends on its \emph{stability}:
 \begin{equation}
-\label{eq:ba_update}
+\label{eq:persist-term}
+\mathrm{Persist}_t(p) 
+\;=\; 
+P_t(p)\,\cdot\,S_t(p).
+\end{equation}
+Here, \(P_t(p)\) is the pattern's probability at generation~\(t\), and \(S_t(p)\) denotes its stability (expected lifetime). A higher \(S_t(p)\) increases the likelihood that \(p\) lasts or even grows in abundance from generation to generation. Second, more copies of pattern \(p\) can be \emph{created} through concatenations of other patterns:
+\begin{equation}
+\label{eq:create-term}
+\mathrm{Create}_t(p)
+\;=\;
+\sum_{(q,r)\,\to\,p}\;P_t(q)\,P_t(r),
+\end{equation}
+where the notation \(\,(q,r)\to p\) indicates that \(p\) forms from combining patterns \(q\) and \(r\). This term captures how new copies of \(p\) appear whenever its reactants \(q\) and \(r\) are sufficiently probable within the population. For example, if there are copies of $AB, A, BA$ in the population, then $ABA$ can be formed by: $AB + A \to ABA$ or $A + BA \to ABA$. To obtain the final probability distribution at generation \(t+1\), we \emph{normalize} these contributions across all patterns:
+\begin{equation}
+\label{eq:full-ba-update}
 P_{t+1}(p)
 \;=\;
-\frac{\,P_{t}(p)\;\cdot\;S\!\bigl(p\bigr)\,}
-     {\sum_{p'\,\in\,P}\;\Bigl[P_{t}\!\bigl(p'\bigr)\;\cdot\;S\!\bigl(p'\bigr)\Bigr]}
+\frac{
+  \mathrm{Persist}_t(p)
+  \;+\;
+  \mathrm{Create}_t(p)
+}{
+  \displaystyle \sum_{p'} 
+  \Bigl[
+    \mathrm{Persist}_t(p')
+    \;+\;
+    \mathrm{Create}_t(p')
+  \Bigr]
+}.
 \end{equation}
-
-Intuitively, multiplying $P(p)$ by $S(p)$ reflects two factors: the initial abundance (or likelihood) of the pattern, and its ability to persist over enough time (generations) to interact repeatedly. Since $S(p)$ is interpreted as the expected lifetime of the pattern, then having more time (counted in generations) to react or be selected naturally increases its representation in the next update. Meanwhile, a pattern's prior probability $P(p)$ captures how commonly it appears in the current generation. Both a high initial abundance and a long lifetime can boost a pattern's success in the subsequent generation. For simplicity, we now use the proportional form in our discrete analysis:
-\begin{equation}
-P_{t+1}(p) \;\propto\; P_t(p)\,\cdot\,S(p)
-\end{equation}
-Here, $S(p)$ represents the stable lifetime of pattern $p$. Multiplying $P_t(p)$ by $S(p)$ ensures that patterns with higher stability gain an advantage in subsequent generations, as they remain available for more interactions or persist longer. This update rule encapsulates the idea that a stable pattern is more likely to be ``selected'' over time. 
+Patterns with higher stability \(S_t(p)\) can retain a large share of the population (persistence), and patterns whose precursors \((q,r)\) are abundant can quickly emerge (creation). High initial abundance \(P_t(p)\) also confers an “inertial” advantage by multiplying with \(S_t(p)\). Conversely, novel patterns can claim probability mass through pairwise formation if \(q\) and \(r\) are sufficiently probable.
 
 \subsection{Entropy Dynamics in BA Systems}
 
-The entropy dynamics in BA systems arise from the interplay between stabilizing feedback that reinforces stable patterns and stochastic fluctuations that increase randomness. To capture the system-wide effect of stability, we define an \emph{effective stability}:
-\begin{equation}
-S_{\mathrm{eff}} = \sum_{p \in P} P_t(p) \cdot S(p)
-\end{equation}
-where \( S(p) \) is the stability of pattern \( p \), and \( P_t(p) \) is its probability at time \( t \). Effective stability measures the weighted average stability of the population, reflecting how strongly stability drives the system dynamics. As stable patterns dominate, \( S_{\mathrm{eff}} \) increases, accelerating reinforcement. Conversely, a prevalence of less stable patterns reduces \( S_{\mathrm{eff}} \), slowing the ordering process. As we reduce $\Delta t$ in generational simulation the continuous-time approximation of the probability evolution in BA systems tends to:
-\begin{equation}
-\frac{dP(p,t)}{dt} \propto P(p,t) \cdot S_{\mathrm{eff}}
-\end{equation}
-which implies an exponential solution:
-\begin{equation}
-P_t(p) = \frac{e^{S_{\mathrm{eff}} t}}{Z(t)}
-\end{equation}
-Here, \( Z(t) = \sum_{p} e^{S_{\mathrm{eff}} t} \) is the normalization factor ensuring that probabilities sum to 1. The entropy of the system is defined as:
-\begin{equation}
-H(t) = -\sum_{p} P_t(p) \ln P_t(p)
-\end{equation}
-Substituting \( P_t(p) = \frac{e^{S_{\mathrm{eff}} t}}{Z(t)} \) and simplifying, we find:
-\begin{equation}
-H(t) = -S_{\mathrm{eff}} t + \ln Z(t)
-\end{equation}
+When we leave out the normalization constant in Equation~\ref{eq:full-ba-update} it becomes evident that two competing processes determine how the probability shifts across patterns:
+\[
+P_{t+1}(p) \;\propto\; \mathrm{Persist}_t(p) \;+\; \mathrm{Create}_t(p).
+\]
+The $\mathrm{Persist}_t(p)$ term, defined by $P_t(p)\,S(p)$, grows sharply when $S(p)$ is large, concentrating probability in stable patterns and lowering entropy by making the distribution more peaked. Conversely, the $\mathrm{Create}_t(p)$ term, derived from $\sum_{(q,r)\to p}P_t(q)\,P_t(r)$, lets new or previously rare patterns emerge if their precursors $q$ and $r$ remain abundant, thus dispersing probability and raising entropy.
 
-In this expression, the term \( -S_{\mathrm{eff}} t \) captures entropy reduction due to stabilizing feedback, driven by the exponential concentration of probabilities on stable patterns. The term \( \ln Z(t) \), by contrast, reflects entropy increase resulting from stochastic fluctuations. In systems with random diffusion, the accessible state space grows sub-exponentially, with \( \ln Z(t) \propto \ln(t) \) capturing this entropy contribution.
-
-This balance between entropy reduction and increase is central to BA system dynamics. When stabilizing feedback dominates, entropy decreases overall, guiding the system toward ordered, low-entropy configurations. However, if stochastic fluctuations dominate, entropy continues to rise, dispersing probabilities and preventing structured order. This dynamic interplay illustrates the conditions under which BA systems transition between order and randomness, highlighting the role of stability in driving emergent complexity.
+One may draw an analogy to a predator–prey dynamic: stable compounds act like predators by capturing and retaining probability at the expense of less stable patterns, while ephemeral or newly created compounds behave like prey by diffusing the distribution. In an unconstrained system without stability, there is no carryover advantage, so probability remains evenly spread and maintains high entropy. In a Bayesian Assembly (BA) system, however, sufficiently large-stability patterns typically outcompete the rest. If their cumulative effect exceeds the diversification introduced by creation events, the system’s entropy declines over time, ultimately settling into a low-entropy configuration dominated by a small number of robust patterns.
 
 \section{Mixing Two BA Systems}
 
 Mixing two independently evolved Bayesian Assembly (BA) systems introduces a new layer of complexity, where patterns and interactions from each system influence and reshape one another. This interaction results in the exchange of information, changes in entropy dynamics, and the emergence of novel patterns that were inaccessible within isolated systems.
 
-Consider two independently evolved BA systems, each representing populations of compounds derived from distinct base elements: \( A, B, C, \dots \) for the first system and \( X, Y, Z, \dots \) for the second. Each system evolves separately, guided by its population distribution and node stability constraints. Upon mixing, the systems form a joint network, wherein patterns from both systems interact to create cross-system compounds (e.g., \( ABXX, BBYZ \)). Stability constraints, which govern the persistence of patterns, extend to these intersystem interactions, creating a dynamic interplay that determines the joint system's evolution. The updated probabilities in the combined system reflect both the within-system interactions and the newly formed cross-system interactions, as depicted in Figure~\ref{fig:mixed_1}.
+Consider two independently evolved BA systems, each representing populations of compounds derived from distinct base elements: \( A, B, C, \dots \) for the first system and \( X, Y, Z, \dots \) for the second. Each system evolves separately, guided by its population distribution and node stability constraints. Upon mixing, the systems form a joint network, in which patterns from both systems interact to create compounds between systems (e.g., \( ABXX, BBYZ \)). Stability constraints, which govern the persistence of patterns, extend to these intersystem interactions, creating a dynamic interplay that determines the joint system's evolution. The updated probabilities in the combined system reflect both the within-system interactions and the newly formed cross-system interactions, as depicted in Figure~\ref{fig:mixed_1}.
 
 \begin{figure}[htp]
     \centering
@@ -205,23 +208,37 @@ In the context of BA systems, mixing introduces a larger combined state space, w
 
 \section{Bayesian Dynamics of Evolving Probability Distributions}
 
-Kauffman's \emph{Theory of the Adjacent Possible} \cite{kauffman2000investigations} \cite{kauffman2024tap} provides a conceptual lens through which the evolving probability distribution in Bayesian Assembly (BA) systems can be understood. In BA systems, the probability distribution itself evolves over successive generations, with stable patterns persisting and proliferating, while less stable compounds dissipate. This process highlights the emergence of new patterns in generation \( t+1 \) that were inaccessible in generation \( t \), guided by the stability-driven feedback mechanisms intrinsic to BA dynamics. As we saw in Equation \ref{eq:ba_update} the BA generational update rule can be written as:
-\begin{equation}
-P_{t+1}(p) \;=\; 
-\frac{\,P_t(p)\,\cdot\,S(p)\,}
-     {\sum_{p' \in \mathcal{P}}\,P_t\!\bigl(p'\bigr)\,\cdot\,S\!\bigl(p'\bigr)},
-\end{equation} 
-This rule can be interpreted as a Bayesian evolutionary formula:
+The evolving probability distribution in Bayesian Assembly (BA) systems can be understood through Kauffman's \emph{Theory of the Adjacent Possible} \cite{kauffman2000investigations, kauffman2024tap}, which describes how new states become accessible as existing structures form. In BA systems, patterns with higher stability persist and proliferate across generations, while less stable configurations dissipate. This iterative process allows the emergence of novel patterns in generation \( t+1 \) that were previously inaccessible in generation \( t \), driven by stability-weighted selection.
 
+In an unconstrained system, newly formed patterns reset to uniform probabilities each generation, preventing any long-term bias. In contrast, BA systems evolve according to Equation \ref{eq:full-ba-update}, which can be written as:
 \begin{equation}
-\text{New Probability (Posterior)}
-\;=\;
-\frac{\text{Old Probability (Prior)} \;\times\; \text{Stability (Likelihood)}}
-     {\text{Normalization}}
+P_{t+1}(p) \propto \underbrace{P_t(p)\,S(p)}_{\text{Persist}(p)} + \underbrace{\sum_{(q,r)\to p} P_t(q)\,P_t(r)}_{\text{Create}(p)},
 \end{equation}
-where Stability corresponds to the Likelihood term in the Bayesian framework, as it quantifies the probability that a given pattern persists over time, conditioned on its formation and environmental context. In Bayesian theory, the Likelihood measures how well a model explains observed data; here, it reflects how the inherent stability of a pattern supports its continued existence. Patterns with higher stability are more likely to persist and, therefore, to participate in subsequent interactions, influencing the generational evolution of the system. This iterative update process not only reinforces stable patterns but also enables the exploration of the adjacent possible: newly accessible patterns with sufficiently high stability can reshape the probability distribution, giving rise to emergent configurations.
+where \( \text{Persist}(p) = P_t(p) S(p) \) represents the survival of an existing pattern, akin to a Bayesian prior weighted by a stability-based likelihood. The second term, \( \text{Create}(p) \), accounts for the combinatorial formation of new copies of $p$ from precursor interactions.
 
-This evolving process highlights the dual nature of probability in BA systems. The distribution of each generation serves as a prior, while the posterior emerges as a dynamically updated distribution that reflects the effects of stability-driven selection and newly formed patterns \cite{le2020equation}. Unlike static Bayesian frameworks, this iterative process allows for the genuine emergence of novel states and interactions, reshaping the system over time. The generational distribution reflects frequentist probabilities based on observed frequencies, but transitions between generations are governed by an evolving Bayesian distribution, illustrating how stability and interaction dynamics drive the system toward increasingly complex and ordered states.
+This process parallels Bayesian updating: the prior distribution \( P_t(p) \) is modified by stability-weighted persistence and new combinatorial interactions, yielding a posterior distribution \( P_{t+1}(p) \) that governs the next generation. Unlike static Bayesian inference, where a fixed dataset refines a probability estimate, BA systems dynamically reshape their state space, allowing for genuine emergence. The frequentist probability of patterns within a generation reflects observed occurrences, but transitions between generations follow an evolving Bayesian update, demonstrating how stability-driven selection and probabilistic interactions drive the system toward structured complexity \cite{le2020equation}.
+
+\section{Stability Imbalances in Nature}
+
+The BA theoretical model is motivated by the observable reality that our universe exhibits extreme disparities in stability across physical systems, ranging from fleeting nuclear states to gravitationally bound structures that persist for billions of years. These variations in binding energy and lifespan shape the formation of low-entropy structures, including biological ecosystems and crystalline solids. For instance, covalent bonds, far stronger than weak nuclear interactions, allow organic molecules like diamond to remain stable over geological timescales, whereas less stable bonds degrade rapidly. Similarly, strong nuclear forces maintain atomic nuclei for trillions of years, while gravitational systems such as planets and galaxies persist over cosmological timescales. Local environmental factors—including temperature, quantum effects, pressure, and catalysis—further modulate these stability dynamics, influencing the emergence and persistence of ordered structures.
+
+\begin{table}[ht]
+\centering
+\caption{Representative Binding Forces in Nature with Their Relative Strengths and Typical Lifetimes}
+\label{tab:binding-forces}
+\footnotesize
+\begin{tabularx}{\textwidth}{l@{\extracolsep{4pt}}c@{\extracolsep{4pt}}X}
+\toprule
+\textbf{Force Type} & \textbf{Relative Strength (vs.\ Gravity)} & \textbf{Typical Lifetime} \\
+\midrule
+Weak Nuclear & $10^{25}\,\times$ gravity & Microseconds to minutes \\
+Electromagnetic (Covalent Bonds) & $10^{36}\,\times$ gravity & Seconds to billions of years \\
+Strong Nuclear (Stable Nuclei) & $10^{38}\,\times$ gravity & Millions to trillions of years \\
+Gravitational (Planets, Stars) & Baseline ($1\times$) & Millions to billions of years \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
 
 \section{Simulation of Bayesian Assembly and Unconstrained Systems}
 
